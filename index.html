@@ -108,7 +108,7 @@
   <!-- ╔══════════════════════════════════════════╗
        NAV
   ╚══════════════════════════════════════════╝ -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-5 border-b border-transparent">
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 md:px-12 py-4 md:py-5 border-b border-transparent">
     <a href="#" class="font-display text-[21px] font-medium text-ink hover:text-forest transition-colors duration-200">
       Kaizen<span class="text-ember">Scape</span>
     </a>
@@ -122,7 +122,22 @@
        class="hidden md:inline-block bg-forest text-white text-[11px] font-semibold tracking-[0.14em] uppercase px-7 py-3 hover:bg-forest-lt active:scale-95 transition-colors duration-200">
       Get Started
     </a>
+    <!-- Hamburger (mobile only) -->
+    <button id="menu-btn" class="md:hidden flex flex-col justify-center gap-[5px] w-9 h-9 relative z-50" aria-label="Toggle menu">
+      <span class="menu-bar block w-5 h-0.5 bg-ink transition-all duration-300 origin-center"></span>
+      <span class="menu-bar block w-5 h-0.5 bg-ink transition-all duration-300"></span>
+      <span class="menu-bar block w-5 h-0.5 bg-ink transition-all duration-300 origin-center"></span>
+    </button>
   </nav>
+
+  <!-- Mobile menu panel -->
+  <div id="mobile-menu" class="hidden fixed top-[57px] left-0 right-0 z-40 bg-paper border-b border-forest/10 shadow-lg px-5 py-6 flex-col gap-1 md:hidden">
+    <a href="#services" onclick="closeMobileMenu()" class="block text-[13px] font-semibold tracking-[0.1em] uppercase text-ink-soft hover:text-forest py-3 border-b border-forest/05 transition-colors duration-200">Services</a>
+    <a href="#about"    onclick="closeMobileMenu()" class="block text-[13px] font-semibold tracking-[0.1em] uppercase text-ink-soft hover:text-forest py-3 border-b border-forest/05 transition-colors duration-200">About</a>
+    <a href="#process"  onclick="closeMobileMenu()" class="block text-[13px] font-semibold tracking-[0.1em] uppercase text-ink-soft hover:text-forest py-3 border-b border-forest/05 transition-colors duration-200">Process</a>
+    <a href="#contact"  onclick="closeMobileMenu()" class="block text-[13px] font-semibold tracking-[0.1em] uppercase text-ink-soft hover:text-forest py-3 border-b border-forest/05 transition-colors duration-200">Contact</a>
+    <a href="#contact"  onclick="closeMobileMenu()" class="mt-4 inline-block bg-forest text-white text-[11px] font-semibold tracking-[0.14em] uppercase px-7 py-3 hover:bg-forest-lt transition-colors duration-200">Get Started</a>
+  </div>
 
   <!-- ╔══════════════════════════════════════════╗
        HERO — image + warm cream overlay on left
@@ -145,7 +160,7 @@
     <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-ember/0 via-ember/60 to-ember/0"></div>
 
     <!-- Content -->
-    <div class="relative z-10 px-14 pt-28 pb-20 max-w-[640px]">
+    <div class="relative z-10 px-5 md:px-14 pt-24 md:pt-28 pb-16 md:pb-20 max-w-[640px]">
 
       <div class="animate-fu1 flex items-center gap-3 text-[10px] font-semibold tracking-[0.3em] uppercase text-ember mb-8">
         <span class="block w-6 h-px bg-ember"></span>
@@ -180,7 +195,7 @@
     </div>
 
     <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-14 flex items-center gap-3 z-10">
+    <div class="absolute bottom-8 left-5 md:left-14 flex items-center gap-3 z-10">
       <div class="bounce-y">
         <svg class="w-4 h-4 text-ink-mute" viewBox="0 0 16 16" fill="none">
           <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -193,7 +208,7 @@
   <!-- ╔══════════════════════════════════════════╗
        SERVICES — 3 equal image cards (1-1-1)
   ╚══════════════════════════════════════════╝ -->
-  <section id="services" class="bg-cream py-24 px-12">
+  <section id="services" class="bg-cream py-16 md:py-24 px-5 md:px-12">
     <div class="max-w-[1360px] mx-auto">
 
       <!-- Header -->
@@ -211,7 +226,7 @@
       </div>
 
       <!-- ── 3 cards side by side ── -->
-      <div class="grid grid-cols-1 md:grid-cols-3 min-h-[560px]">
+      <div class="grid grid-cols-1 md:grid-cols-3 min-h-[320px] md:min-h-[560px]">
 
         <!-- Card 01 · Technical -->
         <div class="svc-card relative overflow-hidden group cursor-default">
@@ -343,7 +358,7 @@
     <div class="absolute inset-0 opacity-[0.04]"
          style="background-image:repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size:20px 20px;"></div>
 
-    <div class="relative z-10 px-12 py-20 max-w-[1360px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div class="relative z-10 px-5 md:px-12 py-14 md:py-20 max-w-[1360px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
       <!-- Left -->
       <div>
@@ -409,13 +424,13 @@
   <!-- ╔══════════════════════════════════════════╗
        ABOUT / PHILOSOPHY
   ╚══════════════════════════════════════════╝ -->
-  <section id="about" class="py-28 px-12 bg-paper relative overflow-hidden">
+  <section id="about" class="py-16 md:py-28 px-5 md:px-12 bg-paper relative overflow-hidden">
 
     <!-- Subtle forest tint shape top-right -->
     <div class="absolute top-0 right-0 w-[500px] h-[400px] pointer-events-none"
          style="background:radial-gradient(ellipse at 80% 10%, rgba(27,67,50,0.05) 0%, transparent 65%);"></div>
 
-    <div class="max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+    <div class="max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
       <!-- Left: image + caption -->
       <div class="lg:col-span-5 reveal fl">
@@ -519,7 +534,7 @@
   <!-- ╔══════════════════════════════════════════╗
        PROCESS
   ╚══════════════════════════════════════════╝ -->
-  <section id="process" class="py-24 px-12 bg-cream">
+  <section id="process" class="py-16 md:py-24 px-5 md:px-12 bg-cream">
     <div class="max-w-[1360px] mx-auto">
 
       <div class="reveal mb-16">
@@ -566,7 +581,7 @@
   <!-- ╔══════════════════════════════════════════╗
        CONTACT
   ╚══════════════════════════════════════════╝ -->
-  <section id="contact" class="py-24 px-12 bg-paper relative overflow-hidden">
+  <section id="contact" class="py-16 md:py-24 px-5 md:px-12 bg-paper relative overflow-hidden">
     <div class="absolute top-0 right-0 w-[600px] h-[400px] pointer-events-none"
          style="background:radial-gradient(ellipse at 80% 10%, rgba(200,132,42,0.07) 0%, transparent 65%);"></div>
     <div class="absolute bottom-0 left-0 w-[400px] h-[300px] pointer-events-none"
@@ -603,45 +618,50 @@
       </div>
 
       <!-- Form -->
-      <div class="reveal fr bg-cream p-12 shadow-[0_4px_40px_rgba(27,67,50,0.08)]">
+      <div class="reveal fr bg-cream p-6 md:p-12 shadow-[0_4px_40px_rgba(27,67,50,0.08)]">
         <h3 class="text-[17px] font-semibold text-ink mb-8">Send us a message</h3>
 
-        <div class="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <label for="fname" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">First Name</label>
-            <input id="fname" type="text" placeholder="John" class="field" />
+        <form id="contact-form" name="contact" method="POST" netlify netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="hidden"><input name="bot-field" /></p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="fname" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">First Name</label>
+              <input id="fname" name="first-name" type="text" placeholder="John" class="field" />
+            </div>
+            <div>
+              <label for="lname" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Last Name</label>
+              <input id="lname" name="last-name" type="text" placeholder="Smith" class="field" />
+            </div>
           </div>
-          <div>
-            <label for="lname" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Last Name</label>
-            <input id="lname" type="text" placeholder="Smith" class="field" />
+          <div class="mb-4">
+            <label for="email" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Email Address</label>
+            <input id="email" name="email" type="email" placeholder="john@company.com" class="field" />
           </div>
-        </div>
-        <div class="mb-4">
-          <label for="email" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Email Address</label>
-          <input id="email" type="email" placeholder="john@company.com" class="field" />
-        </div>
-        <div class="mb-4">
-          <label for="company" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Company</label>
-          <input id="company" type="text" placeholder="Your organisation" class="field" />
-        </div>
-        <div class="mb-4">
-          <label for="service" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Area of Interest</label>
-          <select id="service" class="field">
-            <option value="">Select a service…</option>
-            <option>Technical Consulting</option>
-            <option>HR Operations</option>
-            <option>Accounting &amp; Finance</option>
-            <option>Multiple / Not Sure Yet</option>
-          </select>
-        </div>
-        <div class="mb-8">
-          <label for="message" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">What are you working on?</label>
-          <textarea id="message" rows="4" placeholder="Tell us about your challenge or goal…" class="field resize-y"></textarea>
-        </div>
-        <button id="submit-btn" type="button"
-                class="w-full bg-forest text-white text-[11px] font-bold tracking-[0.16em] uppercase py-4 hover:bg-forest-lt active:scale-[0.98] transition-colors duration-200">
-          Send Message
-        </button>
+          <div class="mb-4">
+            <label for="company" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Company</label>
+            <input id="company" name="company" type="text" placeholder="Your organisation" class="field" />
+          </div>
+          <div class="mb-4">
+            <label for="service" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Area of Interest</label>
+            <select id="service" name="service" class="field">
+              <option value="">Select a service…</option>
+              <option>Technical Consulting</option>
+              <option>HR Operations</option>
+              <option>Accounting &amp; Finance</option>
+              <option>Multiple / Not Sure Yet</option>
+            </select>
+          </div>
+          <div class="mb-8">
+            <label for="message" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">What are you working on?</label>
+            <textarea id="message" name="message" rows="4" placeholder="Tell us about your challenge or goal…" class="field resize-y"></textarea>
+          </div>
+          <button id="submit-btn" type="submit"
+                  class="w-full bg-forest text-white text-[11px] font-bold tracking-[0.16em] uppercase py-4 hover:bg-forest-lt active:scale-[0.98] transition-colors duration-200">
+            Send Message
+          </button>
+        </form>
       </div>
 
     </div>
@@ -650,7 +670,7 @@
   <!-- ╔══════════════════════════════════════════╗
        KAIZEN BAND — founding principle
   ╚══════════════════════════════════════════╝ -->
-  <div class="bg-forest py-10 px-14 overflow-hidden relative">
+  <div class="bg-forest py-10 px-5 md:px-14 overflow-hidden relative">
     <!-- Kanji watermark -->
     <div class="absolute right-20 top-1/2 -translate-y-1/2 font-display text-[160px] font-normal text-white/[0.04] select-none pointer-events-none leading-none">改善</div>
     <div class="max-w-[1360px] mx-auto flex flex-col md:flex-row items-start md:items-center gap-6 justify-between relative z-10">
@@ -668,7 +688,7 @@
   <!-- ╔══════════════════════════════════════════╗
        FOOTER — forest green
   ╚══════════════════════════════════════════╝ -->
-  <footer class="bg-forest px-12 pt-14 pb-8">
+  <footer class="bg-forest px-5 md:px-12 pt-10 md:pt-14 pb-8">
     <div class="max-w-[1360px] mx-auto">
 
       <div class="flex flex-col lg:flex-row gap-14 justify-between pb-10 mb-8 border-b border-white/10">
@@ -738,13 +758,40 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // ── Form submit ─────────────────────────────────────────────────
-    const btn = document.getElementById('submit-btn');
-    btn.addEventListener('click', () => {
-      btn.textContent = 'Message Sent ✓';
-      btn.style.background = '#2D6A4F';
+    // ── Mobile menu ─────────────────────────────────────────────────
+    const menuBtn  = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden', isOpen);
+      mobileMenu.classList.toggle('flex', !isOpen);
+    });
+    function closeMobileMenu() {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('flex');
+    }
+
+    // ── Netlify form submit ──────────────────────────────────────────
+    const form = document.getElementById('contact-form');
+    const btn  = document.getElementById('submit-btn');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.textContent = 'Sending…';
       btn.disabled = true;
-      setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; btn.disabled = false; }, 3500);
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString()
+        });
+        btn.textContent = 'Message Sent ✓';
+        btn.style.background = '#2D6A4F';
+        form.reset();
+        setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; btn.disabled = false; }, 4000);
+      } catch (err) {
+        btn.textContent = 'Something went wrong — please try again';
+        btn.disabled = false;
+      }
     });
   </script>
 </body>
