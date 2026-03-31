@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KaizenScape</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper:      '#FDFAF6',
+            cream:      '#F2EDE3',
+            forest:     '#1B4332',
+            'forest-lt':'#2D6A4F',
+            'forest-xl':'#E8F2ED',
+            ember:      '#C8842A',
+            'ember-lt': '#E09A40',
+            'ember-pale':'#FDF3E3',
+            ink:        '#1A1510',
+            'ink-soft': '#5A5248',
+            'ink-mute': '#9A9087',
+          },
+          fontFamily: {
+            display: ['"Lora"', 'Georgia', 'serif'],
+            sans:    ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          keyframes: {
+            'fade-up':    { '0%': { opacity:'0', transform:'translateY(32px)' },  '100%': { opacity:'1', transform:'translateY(0)' } },
+            'fade-left':  { '0%': { opacity:'0', transform:'translateX(-24px)' }, '100%': { opacity:'1', transform:'translateX(0)' } },
+            'fade-right': { '0%': { opacity:'0', transform:'translateX(24px)' },  '100%': { opacity:'1', transform:'translateX(0)' } },
+            'scale-in':   { '0%': { opacity:'0', transform:'scale(0.94)' },       '100%': { opacity:'1', transform:'scale(1)' } },
+            'line-x':     { '0%': { transform:'scaleX(0)', transformOrigin:'left' }, '100%': { transform:'scaleX(1)' } },
+            'marquee':    { '0%': { transform:'translateX(0)' }, '100%': { transform:'translateX(-50%)' } },
+          },
+          animation: {
+            'fu1': 'fade-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both',
+            'fu2': 'fade-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s both',
+            'fu3': 'fade-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s both',
+            'fu4': 'fade-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.7s both',
+            'fu5': 'fade-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.9s both',
+            'line-x': 'line-x 1s cubic-bezier(0.16,1,0.3,1) 0.8s both',
+            'marquee': 'marquee 30s linear infinite',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* ── Grain ── */
+    body::before { content:''; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:0.018; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:200px 200px; }
+
+    /* ── Scroll reveal ── */
+    .reveal       { opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.fl    { transform:translateX(-28px); }
+    .reveal.fr    { transform:translateX(28px); }
+    .reveal.sc    { transform:scale(0.95); }
+    .reveal.visible { opacity:1 !important; transform:none !important; }
+    .reveal.d1    { transition-delay:0.1s; }
+    .reveal.d2    { transition-delay:0.22s; }
+    .reveal.d3    { transition-delay:0.34s; }
+    .reveal.d4    { transition-delay:0.46s; }
+
+    /* ── Service card hover reveal ── */
+    .svc-card .card-img  { transition:transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .svc-card:hover .card-img { transform:scale(1.07); }
+
+    .svc-card .card-overlay { transition:background 0.5s ease; }
+    .svc-card:hover .card-overlay { background:linear-gradient(to top, rgba(27,67,50,0.98) 35%, rgba(27,67,50,0.7) 70%, rgba(27,67,50,0.4) 100%) !important; }
+
+    .svc-card .card-reveal { max-height:0; overflow:hidden; transition:max-height 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease; opacity:0; }
+    .svc-card:hover .card-reveal { max-height:360px; opacity:1; }
+
+    .svc-card .card-border { transform:scaleX(0); transform-origin:left; transition:transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+    .svc-card:hover .card-border { transform:scaleX(1); }
+
+    /* ── Process step connector ── */
+    .proc-step:not(:last-child)::after { content:''; position:absolute; top:22px; left:calc(100% + 1px); width:100%; height:1px; background:rgba(27,67,50,0.12); }
+
+    /* ── Nav ── */
+    #navbar { transition:background 0.35s ease, border-color 0.35s ease, padding 0.35s ease; }
+    #navbar.scrolled { background:rgba(253,250,246,0.96); backdrop-filter:blur(16px); border-bottom:1px solid rgba(27,67,50,0.1); }
+
+    /* ── Form ── */
+    .field { width:100%; padding:12px 16px; font-size:13px; font-family:inherit; color:#1A1510; background:#FDFAF6; border:1px solid #E2D9CC; outline:none; transition:border-color 0.2s ease; }
+    .field:focus { border-color:#C8842A; }
+    .field::placeholder { color:#9A9087; }
+    select.field { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A9087' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; appearance:none; cursor:pointer; }
+
+    /* ── Focus ── */
+    :focus-visible { outline:2px solid #C8842A; outline-offset:3px; }
+
+    /* ── Bounce ── */
+    @keyframes bounce-y { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+    .bounce-y { animation:bounce-y 2.4s ease-in-out infinite; }
+
+    /* ── Approach section quote line ── */
+    .quote-line { width:0; height:3px; background:#C8842A; transition:width 1s cubic-bezier(0.16,1,0.3,1) 0.3s; }
+    .reveal.visible .quote-line { width:64px; }
+  </style>
+</head>
+<body class="bg-paper text-ink font-sans antialiased overflow-x-hidden">
+
+  <!-- ╔══════════════════════════════════════════╗
+       NAV
+  ╚══════════════════════════════════════════╝ -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-5 border-b border-transparent">
+    <a href="#" class="font-display text-[21px] font-medium text-ink hover:text-forest transition-colors duration-200">
+      Kaizen<span class="text-ember">Scape</span>
+    </a>
+    <ul class="hidden md:flex items-center gap-10 list-none">
+      <li><a href="#services" class="text-[11px] font-semibold tracking-[0.14em] uppercase text-ink-soft hover:text-forest transition-colors duration-200">Services</a></li>
+      <li><a href="#about"    class="text-[11px] font-semibold tracking-[0.14em] uppercase text-ink-soft hover:text-forest transition-colors duration-200">About</a></li>
+      <li><a href="#process"  class="text-[11px] font-semibold tracking-[0.14em] uppercase text-ink-soft hover:text-forest transition-colors duration-200">Process</a></li>
+      <li><a href="#contact"  class="text-[11px] font-semibold tracking-[0.14em] uppercase text-ink-soft hover:text-forest transition-colors duration-200">Contact</a></li>
+    </ul>
+    <a href="#contact"
+       class="hidden md:inline-block bg-forest text-white text-[11px] font-semibold tracking-[0.14em] uppercase px-7 py-3 hover:bg-forest-lt active:scale-95 transition-colors duration-200">
+      Get Started
+    </a>
+  </nav>
+
+  <!-- ╔══════════════════════════════════════════╗
+       HERO — image + warm cream overlay on left
+  ╚══════════════════════════════════════════╝ -->
+  <section class="relative min-h-screen overflow-hidden flex items-center">
+
+    <!-- Full-bleed image -->
+    <img src="https://picsum.photos/seed/brightoffice2/1920/1080"
+         alt="KaizenScape — professional workspace"
+         class="absolute inset-0 w-full h-full object-cover object-center" />
+
+    <!-- Cream gradient overlay — solid left, fading to transparent right -->
+    <div class="absolute inset-0"
+         style="background:linear-gradient(to right, rgba(253,250,246,0.97) 0%, rgba(253,250,246,0.97) 48%, rgba(253,250,246,0.55) 68%, rgba(253,250,246,0.0) 84%);"></div>
+
+    <!-- Subtle top-bottom fade for mood -->
+    <div class="absolute inset-0" style="background:linear-gradient(to bottom, rgba(253,250,246,0.2) 0%, transparent 30%, transparent 70%, rgba(253,250,246,0.3) 100%);"></div>
+
+    <!-- Ember vertical accent bar -->
+    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-ember/0 via-ember/60 to-ember/0"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 px-14 pt-28 pb-20 max-w-[640px]">
+
+      <div class="animate-fu1 flex items-center gap-3 text-[10px] font-semibold tracking-[0.3em] uppercase text-ember mb-8">
+        <span class="block w-6 h-px bg-ember"></span>
+        Technology · People · Finance
+      </div>
+
+      <h1 class="animate-fu2 font-display font-normal text-ink leading-[1.04] mb-7"
+          style="font-size:clamp(50px,6.5vw,86px); letter-spacing:-0.02em;">
+        Improving how<br />
+        businesses<br />
+        <em class="italic" style="color:#1B4332;">operate, grow</em><br />
+        and thrive.
+      </h1>
+
+      <p class="animate-fu3 text-[16px] leading-[1.85] text-ink-soft max-w-[460px] mb-10">
+        A specialist consultancy delivering focused expertise across technology, HR operations, and accounting — building better systems and stronger teams.
+      </p>
+
+      <div class="animate-fu4 flex flex-wrap gap-4">
+        <a href="#contact"
+           class="inline-block bg-forest text-white text-[11px] font-semibold tracking-[0.14em] uppercase px-10 py-4 hover:bg-forest-lt active:scale-95 transition-colors duration-200">
+          Start a Conversation
+        </a>
+        <a href="#services"
+           class="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-ink-soft hover:text-forest border-b border-ink-soft/30 hover:border-forest pb-0.5 transition-colors duration-200 group">
+          Explore Services
+          <svg class="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-14 flex items-center gap-3 z-10">
+      <div class="bounce-y">
+        <svg class="w-4 h-4 text-ink-mute" viewBox="0 0 16 16" fill="none">
+          <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-ink-mute">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════╗
+       SERVICES — 3 equal image cards (1-1-1)
+  ╚══════════════════════════════════════════╝ -->
+  <section id="services" class="bg-cream py-24 px-12">
+    <div class="max-w-[1360px] mx-auto">
+
+      <!-- Header -->
+      <div class="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+        <div>
+          <div class="flex items-center gap-3 text-[10px] font-semibold tracking-[0.26em] uppercase text-ember mb-4">
+            <span class="block w-5 h-px bg-ember"></span>
+            What We Do
+          </div>
+          <h2 class="font-display font-normal text-ink leading-[1.07]"
+              style="font-size:clamp(32px,3.5vw,52px); letter-spacing:-0.015em;">
+            Three areas of<br /><em class="italic" style="color:#1B4332;">focused expertise</em>
+          </h2>
+        </div>
+      </div>
+
+      <!-- ── 3 cards side by side ── -->
+      <div class="grid grid-cols-1 md:grid-cols-3 min-h-[560px]">
+
+        <!-- Card 01 · Technical -->
+        <div class="svc-card relative overflow-hidden group cursor-default">
+          <!-- Image -->
+          <img src="https://picsum.photos/seed/techconsulting99/800/700"
+               alt="Technical consulting"
+               class="card-img absolute inset-0 w-full h-full object-cover" />
+          <!-- Overlay -->
+          <div class="card-overlay absolute inset-0"
+               style="background:linear-gradient(to top, rgba(27,67,50,0.96) 35%, rgba(27,67,50,0.65) 65%, rgba(27,67,50,0.35) 100%);"></div>
+          <!-- Top ember bar that draws on hover -->
+          <div class="card-border absolute top-0 left-0 right-0 h-[3px] bg-ember z-20"></div>
+
+          <!-- Content -->
+          <div class="absolute inset-0 z-10 flex flex-col justify-end p-8">
+            <!-- Static (always visible) -->
+            <div class="text-[10px] font-semibold tracking-[0.24em] uppercase text-ember/70 mb-2">01</div>
+            <h3 class="font-display text-[26px] font-normal italic text-white leading-tight">Technical Consulting</h3>
+            <p class="text-[12px] font-semibold tracking-[0.1em] uppercase text-white/40 mt-1 mb-0">Microsoft Cloud &amp; Modern Workplace</p>
+
+            <!-- Reveal on hover -->
+            <div class="card-reveal mt-0">
+              <div class="pt-5 pb-1">
+                <p class="text-[14px] leading-[1.8] text-white/85 mb-5">
+                  We design and implement Microsoft Cloud environments — Modern Workplace, M365 deployments, and enterprise security frameworks that align your people, processes, and technology.
+                </p>
+                <ul class="flex flex-col gap-2 mb-5">
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Microsoft 365 &amp; Modern Workplace</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Identity &amp; Access Management (Entra ID)</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Microsoft Purview — governance &amp; compliance</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Security &amp; Threat Protection</li>
+                </ul>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">M365</span>
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">Azure</span>
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">Purview</span>
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">Entra ID</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 02 · HR — slightly taller feel via different shade overlay -->
+        <div class="svc-card relative overflow-hidden group cursor-default">
+          <img src="https://picsum.photos/seed/teamcollab88/800/700"
+               alt="HR and people operations"
+               class="card-img absolute inset-0 w-full h-full object-cover" />
+          <div class="card-overlay absolute inset-0"
+               style="background:linear-gradient(to top, rgba(27,67,50,0.96) 35%, rgba(27,67,50,0.65) 65%, rgba(27,67,50,0.35) 100%);"></div>
+          <div class="card-border absolute top-0 left-0 right-0 h-[3px] bg-ember z-20"></div>
+
+          <div class="absolute inset-0 z-10 flex flex-col justify-end p-8">
+            <div class="text-[10px] font-semibold tracking-[0.24em] uppercase text-ember/70 mb-2">02</div>
+            <h3 class="font-display text-[26px] font-normal italic text-white leading-tight">HR Operations</h3>
+            <p class="text-[12px] font-semibold tracking-[0.1em] uppercase text-white/40 mt-1 mb-0">Recruitment, People &amp; Workforce</p>
+
+            <div class="card-reveal mt-0">
+              <div class="pt-5 pb-1">
+                <p class="text-[14px] leading-[1.8] text-white/85 mb-5">
+                  We handle the full spectrum of people operations — from sourcing and onboarding talent to day-to-day HR administration that keeps your workforce engaged, compliant, and productive.
+                </p>
+                <ul class="flex flex-col gap-2 mb-5">
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Recruitment &amp; Talent Acquisition</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>HR Administration &amp; Compliance</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Onboarding &amp; Offboarding</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Workforce Planning &amp; Strategy</li>
+                </ul>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">Recruitment</span>
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">HR Admin</span>
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">Talent</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 03 · Finance -->
+        <div class="svc-card relative overflow-hidden group cursor-default">
+          <img src="https://picsum.photos/seed/financework55/800/700"
+               alt="Accounting and finance operations"
+               class="card-img absolute inset-0 w-full h-full object-cover" />
+          <div class="card-overlay absolute inset-0"
+               style="background:linear-gradient(to top, rgba(27,67,50,0.96) 35%, rgba(27,67,50,0.65) 65%, rgba(27,67,50,0.35) 100%);"></div>
+          <div class="card-border absolute top-0 left-0 right-0 h-[3px] bg-ember z-20"></div>
+
+          <div class="absolute inset-0 z-10 flex flex-col justify-end p-8">
+            <div class="text-[10px] font-semibold tracking-[0.24em] uppercase text-ember/70 mb-2">03</div>
+            <h3 class="font-display text-[26px] font-normal italic text-white leading-tight">Accounting &amp; Finance</h3>
+            <p class="text-[12px] font-semibold tracking-[0.1em] uppercase text-white/40 mt-1 mb-0">Bookkeeping, Payroll &amp; Reporting</p>
+
+            <div class="card-reveal mt-0">
+              <div class="pt-5 pb-1">
+                <p class="text-[14px] leading-[1.8] text-white/85 mb-5">
+                  Accurate, timely financial operations that give leadership clear visibility into the business. We manage bookkeeping and payroll so your team can focus on strategic decisions.
+                </p>
+                <ul class="flex flex-col gap-2 mb-5">
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Bookkeeping &amp; Financial Records</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Payroll Processing &amp; Management</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Accounts Payable &amp; Receivable</li>
+                  <li class="flex items-center gap-2.5 text-[13px] text-white/80"><span class="w-1.5 h-1.5 rounded-full bg-ember/80 flex-shrink-0"></span>Financial Reporting &amp; Reconciliation</li>
+                </ul>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">Bookkeeping</span>
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">Payroll</span>
+                  <span class="text-[9px] font-semibold tracking-[0.1em] uppercase bg-white/15 text-white/75 px-2.5 py-1">AP/AR</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════╗
+       APPROACH — full image, forest overlay,
+       the one dramatic moment
+  ╚══════════════════════════════════════════╝ -->
+  <section class="relative min-h-[560px] flex items-center overflow-hidden">
+    <img src="https://picsum.photos/seed/boardroomteam/1400/700"
+         alt="KaizenScape working alongside clients"
+         class="absolute inset-0 w-full h-full object-cover" />
+    <!-- Deep forest overlay -->
+    <div class="absolute inset-0" style="background:rgba(27,67,50,0.88);"></div>
+    <!-- Diagonal texture accent -->
+    <div class="absolute inset-0 opacity-[0.04]"
+         style="background-image:repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size:20px 20px;"></div>
+
+    <div class="relative z-10 px-12 py-20 max-w-[1360px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left -->
+      <div>
+        <div class="reveal flex items-center gap-3 text-[10px] font-semibold tracking-[0.26em] uppercase text-ember mb-7">
+          <span class="block w-5 h-px bg-ember"></span>
+          Our Approach
+        </div>
+        <blockquote class="reveal d1 font-display text-white leading-[1.25] mb-7"
+                    style="font-size:clamp(28px,3.5vw,48px); font-weight:400; font-style:italic; letter-spacing:-0.01em;">
+          "We work alongside your team, not above it."
+        </blockquote>
+        <div class="reveal d1 quote-line mb-8"></div>
+        <p class="reveal d2 text-[15px] leading-[1.9] text-white/60 mb-5 max-w-[460px]">
+          Most consultants deliver a report and disappear. We embed into your operation — learning your systems, your culture, and your goals before making a single recommendation.
+        </p>
+        <p class="reveal d3 text-[15px] leading-[1.9] text-white/60 mb-10 max-w-[460px]">
+          Whether deploying Microsoft 365, managing payroll week-to-week, or finding your next hire — we own the outcome alongside you.
+        </p>
+        <a href="#contact"
+           class="reveal d3 inline-flex items-center gap-3 bg-ember text-white text-[11px] font-semibold tracking-[0.14em] uppercase px-8 py-4 hover:bg-ember-lt active:scale-95 transition-colors duration-200 group">
+          Start a Conversation
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Right — 4 value tiles with glass treatment -->
+      <div class="reveal d2 grid grid-cols-2 gap-3">
+        <div class="p-6 border border-white/10" style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px);">
+          <div class="w-8 h-8 text-ember mb-4">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M16 3l2.45 7.53H23l-6.18 4.49 2.36 7.26L16 17.4l-6.18 4.46 2.36-7.26L4 11.53h7.55L16 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="text-[13px] font-semibold text-white mb-1.5">Depth of expertise</div>
+          <div class="text-[12px] leading-[1.6] text-white/45">Specialists in each domain, not generalists covering too much ground.</div>
+        </div>
+        <div class="p-6 border border-white/10" style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px);">
+          <div class="w-8 h-8 text-ember mb-4">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M5 16l4.5-4.5 3.5 3.5 4.5-5.5 5.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="26" height="26" rx="2" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="text-[13px] font-semibold text-white mb-1.5">Measurable outcomes</div>
+          <div class="text-[12px] leading-[1.6] text-white/45">Every engagement grounded in clear goals and accountable delivery.</div>
+        </div>
+        <div class="p-6 border border-white/10" style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px);">
+          <div class="w-8 h-8 text-ember mb-4">
+            <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="1.5"/><path d="M16 10v6l3.5 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="text-[13px] font-semibold text-white mb-1.5">Long-term partnership</div>
+          <div class="text-[12px] leading-[1.6] text-white/45">We build relationships, not transactions. Growing together over time.</div>
+        </div>
+        <div class="p-6 border border-white/10" style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px);">
+          <div class="w-8 h-8 text-ember mb-4">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M16 4v3M22.2 7.8l-2.12 2.12M25 16h-3M22.2 24.2l-2.12-2.12M16 28v-3M9.8 24.2l2.12-2.12M7 16h3M9.8 7.8l2.12 2.12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="text-[13px] font-semibold text-white mb-1.5">Continuous improvement</div>
+          <div class="text-[12px] leading-[1.6] text-white/45">Kaizen isn't just our name — it's how we operate, every day.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════╗
+       ABOUT / PHILOSOPHY
+  ╚══════════════════════════════════════════╝ -->
+  <section id="about" class="py-28 px-12 bg-paper relative overflow-hidden">
+
+    <!-- Subtle forest tint shape top-right -->
+    <div class="absolute top-0 right-0 w-[500px] h-[400px] pointer-events-none"
+         style="background:radial-gradient(ellipse at 80% 10%, rgba(27,67,50,0.05) 0%, transparent 65%);"></div>
+
+    <div class="max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+
+      <!-- Left: image + caption -->
+      <div class="lg:col-span-5 reveal fl">
+        <div class="flex items-center gap-3 text-[10px] font-semibold tracking-[0.26em] uppercase text-ember mb-6">
+          <span class="block w-5 h-px bg-ember"></span>
+          Our Philosophy
+        </div>
+        <h2 class="font-display font-normal text-ink leading-[1.08] mb-8"
+            style="font-size:clamp(32px,3.5vw,50px); letter-spacing:-0.015em;">
+          Kaizen —<br />the pursuit of<br /><em class="italic" style="color:#1B4332;">better, always.</em>
+        </h2>
+
+        <!-- Philosophy image with ember corner marks -->
+        <div class="reveal d1 relative overflow-hidden">
+          <img src="https://picsum.photos/seed/strategyforward/700/500"
+               alt="Strategic planning and growth"
+               class="w-full object-cover" />
+          <!-- Subtle colour overlay to match brand -->
+          <div class="absolute inset-0"
+               style="background:linear-gradient(135deg, rgba(27,67,50,0.18) 0%, rgba(200,132,42,0.08) 100%); mix-blend-mode:multiply;"></div>
+          <!-- Caption strip -->
+          <div class="absolute bottom-0 left-0 right-0 px-6 py-4 bg-forest/80">
+            <p class="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/65">Strategy · Operations · Growth</p>
+          </div>
+          <!-- Corner accents -->
+          <div class="absolute top-4 left-4 w-7 h-7 border-t-2 border-l-2 border-ember/60"></div>
+          <div class="absolute bottom-[52px] right-4 w-7 h-7 border-b-2 border-r-2 border-ember/60"></div>
+        </div>
+      </div>
+
+      <!-- Right: text + values -->
+      <div class="lg:col-span-7 lg:pt-16">
+        <!-- Pull quote -->
+        <blockquote class="reveal font-display font-normal italic text-forest leading-[1.3] mb-8"
+                    style="font-size:clamp(22px,2.5vw,34px); letter-spacing:-0.01em;">
+          "Kaizen means change for the better — the belief that small, disciplined improvements, sustained over time, lead to transformational outcomes."
+        </blockquote>
+
+        <p class="reveal d1 text-[15px] leading-[1.9] text-ink-soft mb-5">
+          We founded KaizenScape because organisations were choosing between generalist firms that lacked depth, and narrow specialists who couldn't see the full picture.
+        </p>
+        <p class="reveal d2 text-[15px] leading-[1.9] text-ink-soft mb-12">
+          We bring focused expertise across three distinct disciplines — technology, people operations, and accounting — delivered with the cohesion of a single, trusted partner who is invested in your long-term success.
+        </p>
+
+        <!-- Values 2×2 grid -->
+        <div class="reveal d2 grid grid-cols-2 gap-px" style="background:rgba(27,67,50,0.08);">
+          <div class="bg-paper p-7">
+            <div class="text-[28px] font-display font-normal italic text-ember leading-none mb-2">01</div>
+            <h4 class="text-[13px] font-semibold text-ink mb-1.5">Depth of expertise</h4>
+            <p class="text-[12px] leading-[1.65] text-ink-mute">Specialists in each domain — not generalists spreading too thin.</p>
+          </div>
+          <div class="bg-paper p-7">
+            <div class="text-[28px] font-display font-normal italic text-ember leading-none mb-2">02</div>
+            <h4 class="text-[13px] font-semibold text-ink mb-1.5">Measurable outcomes</h4>
+            <p class="text-[12px] leading-[1.65] text-ink-mute">Every engagement is tied to clear goals and accountable milestones.</p>
+          </div>
+          <div class="bg-paper p-7">
+            <div class="text-[28px] font-display font-normal italic text-ember leading-none mb-2">03</div>
+            <h4 class="text-[13px] font-semibold text-ink mb-1.5">Long-term partnership</h4>
+            <p class="text-[12px] leading-[1.65] text-ink-mute">We build relationships, not one-off transactions. Growth together.</p>
+          </div>
+          <div class="bg-paper p-7">
+            <div class="text-[28px] font-display font-normal italic text-ember leading-none mb-2">04</div>
+            <h4 class="text-[13px] font-semibold text-ink mb-1.5">Continuous improvement</h4>
+            <p class="text-[12px] leading-[1.65] text-ink-mute">We review and refine constantly — because good enough never stays good enough.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════╗
+       MARQUEE — between about and process
+  ╚══════════════════════════════════════════╝ -->
+  <div class="overflow-hidden border-t border-b border-forest/10 py-4 bg-forest-xl" aria-hidden="true">
+    <div class="flex animate-marquee whitespace-nowrap">
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Microsoft 365</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Modern Workplace</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Identity &amp; Security</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Microsoft Purview</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>HR Operations</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Recruitment Support</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Bookkeeping</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Payroll Management</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Azure Cloud</span>
+      <!-- duplicate -->
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Microsoft 365</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Modern Workplace</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Identity &amp; Security</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Microsoft Purview</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>HR Operations</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Recruitment Support</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Bookkeeping</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Payroll Management</span>
+      <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Azure Cloud</span>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════╗
+       PROCESS
+  ╚══════════════════════════════════════════╝ -->
+  <section id="process" class="py-24 px-12 bg-cream">
+    <div class="max-w-[1360px] mx-auto">
+
+      <div class="reveal mb-16">
+        <div class="flex items-center gap-3 text-[10px] font-semibold tracking-[0.26em] uppercase text-ember mb-4">
+          <span class="block w-5 h-px bg-ember"></span>
+          How We Work
+        </div>
+        <h2 class="font-display font-normal text-ink leading-[1.07]"
+            style="font-size:clamp(30px,3.5vw,48px); letter-spacing:-0.015em;">
+          From first conversation<br /><em class="italic" style="color:#1B4332;">to lasting results</em>
+        </h2>
+      </div>
+
+      <div class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style="background:rgba(27,67,50,0.08);">
+
+        <div class="bg-paper p-10 reveal d1 proc-step relative">
+          <div class="w-12 h-12 rounded-full border-2 border-ember/30 flex items-center justify-center text-[13px] font-semibold font-display italic text-ember mb-8">01</div>
+          <h3 class="text-[17px] font-semibold text-ink mb-3">Discovery</h3>
+          <p class="text-[13px] leading-[1.75] text-ink-soft">Deep immersion into your business — your goals, constraints, and where the real bottlenecks lie.</p>
+        </div>
+
+        <div class="bg-paper p-10 reveal d2 proc-step relative">
+          <div class="w-12 h-12 rounded-full border-2 border-ember/30 flex items-center justify-center text-[13px] font-semibold font-display italic text-ember mb-8">02</div>
+          <h3 class="text-[17px] font-semibold text-ink mb-3">Diagnosis</h3>
+          <p class="text-[13px] leading-[1.75] text-ink-soft">Structured analysis to identify root causes and the highest-leverage improvement opportunities.</p>
+        </div>
+
+        <div class="bg-paper p-10 reveal d3 proc-step relative">
+          <div class="w-12 h-12 rounded-full border-2 border-ember/30 flex items-center justify-center text-[13px] font-semibold font-display italic text-ember mb-8">03</div>
+          <h3 class="text-[17px] font-semibold text-ink mb-3">Design</h3>
+          <p class="text-[13px] leading-[1.75] text-ink-soft">A co-built roadmap with your team — clear priorities, defined milestones, and ownership at every step.</p>
+        </div>
+
+        <div class="bg-paper p-10 reveal d4 proc-step relative">
+          <div class="w-12 h-12 rounded-full border-2 border-ember/30 flex items-center justify-center text-[13px] font-semibold font-display italic text-ember mb-8">04</div>
+          <h3 class="text-[17px] font-semibold text-ink mb-3">Deliver</h3>
+          <p class="text-[13px] leading-[1.75] text-ink-soft">Hands-on implementation with review cycles built in — improvement doesn't stop at go-live.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════╗
+       CONTACT
+  ╚══════════════════════════════════════════╝ -->
+  <section id="contact" class="py-24 px-12 bg-paper relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-[600px] h-[400px] pointer-events-none"
+         style="background:radial-gradient(ellipse at 80% 10%, rgba(200,132,42,0.07) 0%, transparent 65%);"></div>
+    <div class="absolute bottom-0 left-0 w-[400px] h-[300px] pointer-events-none"
+         style="background:radial-gradient(ellipse at 20% 90%, rgba(27,67,50,0.06) 0%, transparent 65%);"></div>
+
+    <div class="relative max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+      <!-- Left -->
+      <div class="reveal fl">
+        <div class="flex items-center gap-3 text-[10px] font-semibold tracking-[0.26em] uppercase text-ember mb-6">
+          <span class="block w-5 h-px bg-ember"></span>
+          Get In Touch
+        </div>
+        <h2 class="font-display font-normal text-ink leading-[1.05] mb-6"
+            style="font-size:clamp(36px,4.5vw,62px); letter-spacing:-0.02em;">
+          Let's build<br />something<br /><em class="italic" style="color:#1B4332;">remarkable.</em>
+        </h2>
+        <p class="text-[15px] leading-[1.85] text-ink-soft mb-10 max-w-[400px]">
+          Whether it's a specific challenge or a broader conversation about where your business is headed — we'd love to hear from you.
+        </p>
+        <a href="mailto:hello@kaizenscape.com"
+           class="inline-flex items-center gap-4 group">
+          <div class="w-11 h-11 bg-forest flex items-center justify-center group-hover:bg-ember transition-colors duration-200">
+            <svg class="w-4 h-4 text-white" viewBox="0 0 16 16" fill="none">
+              <path d="M2 5.333C2 4.597 2.597 4 3.333 4h9.334C13.403 4 14 4.597 14 5.333v5.334C14 11.403 13.403 12 12.667 12H3.333C2.597 12 2 11.403 2 10.667V5.333z" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M2 6l6 3.333L14 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-0.5">Email us directly</div>
+            <div class="text-[15px] font-semibold text-ink group-hover:text-forest transition-colors duration-200">hello@kaizenscape.com</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Form -->
+      <div class="reveal fr bg-cream p-12 shadow-[0_4px_40px_rgba(27,67,50,0.08)]">
+        <h3 class="text-[17px] font-semibold text-ink mb-8">Send us a message</h3>
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label for="fname" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">First Name</label>
+            <input id="fname" type="text" placeholder="John" class="field" />
+          </div>
+          <div>
+            <label for="lname" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Last Name</label>
+            <input id="lname" type="text" placeholder="Smith" class="field" />
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="email" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Email Address</label>
+          <input id="email" type="email" placeholder="john@company.com" class="field" />
+        </div>
+        <div class="mb-4">
+          <label for="company" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Company</label>
+          <input id="company" type="text" placeholder="Your organisation" class="field" />
+        </div>
+        <div class="mb-4">
+          <label for="service" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Area of Interest</label>
+          <select id="service" class="field">
+            <option value="">Select a service…</option>
+            <option>Technical Consulting</option>
+            <option>HR Operations</option>
+            <option>Accounting &amp; Finance</option>
+            <option>Multiple / Not Sure Yet</option>
+          </select>
+        </div>
+        <div class="mb-8">
+          <label for="message" class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">What are you working on?</label>
+          <textarea id="message" rows="4" placeholder="Tell us about your challenge or goal…" class="field resize-y"></textarea>
+        </div>
+        <button id="submit-btn" type="button"
+                class="w-full bg-forest text-white text-[11px] font-bold tracking-[0.16em] uppercase py-4 hover:bg-forest-lt active:scale-[0.98] transition-colors duration-200">
+          Send Message
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════╗
+       KAIZEN BAND — founding principle
+  ╚══════════════════════════════════════════╝ -->
+  <div class="bg-forest py-10 px-14 overflow-hidden relative">
+    <!-- Kanji watermark -->
+    <div class="absolute right-20 top-1/2 -translate-y-1/2 font-display text-[160px] font-normal text-white/[0.04] select-none pointer-events-none leading-none">改善</div>
+    <div class="max-w-[1360px] mx-auto flex flex-col md:flex-row items-start md:items-center gap-6 justify-between relative z-10">
+      <p class="font-display text-[18px] md:text-[22px] font-normal italic text-white/85 leading-[1.45] max-w-[700px]">
+        "Kaizen — 改善 — the Japanese philosophy of continuous, incremental improvement. Not a destination, but a discipline."
+      </p>
+      <div class="flex-shrink-0 hidden md:block w-px h-12 bg-white/15"></div>
+      <div class="flex-shrink-0">
+        <div class="text-[10px] font-semibold tracking-[0.22em] uppercase text-white/40 mb-1.5">Our founding principle</div>
+        <div class="text-[13px] font-semibold text-ember-lt">KaizenScape</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════╗
+       FOOTER — forest green
+  ╚══════════════════════════════════════════╝ -->
+  <footer class="bg-forest px-12 pt-14 pb-8">
+    <div class="max-w-[1360px] mx-auto">
+
+      <div class="flex flex-col lg:flex-row gap-14 justify-between pb-10 mb-8 border-b border-white/10">
+        <div class="max-w-[280px]">
+          <a href="#" class="font-display text-[24px] font-medium text-white block mb-4 hover:text-ember-lt transition-colors duration-200">
+            Kaizen<span class="text-ember-lt">Scape</span>
+          </a>
+          <p class="text-[13px] leading-[1.8] text-white/40 mb-5">
+            Specialist consultants in technology, people operations, and accounting.
+          </p>
+          <a href="mailto:hello@kaizenscape.com"
+             class="text-[13px] text-ember-lt/70 hover:text-ember-lt transition-colors duration-200">
+            hello@kaizenscape.com
+          </a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-12">
+          <div>
+            <div class="text-[10px] font-semibold tracking-[0.22em] uppercase text-white/50 mb-5">Services</div>
+            <ul class="flex flex-col gap-3 list-none">
+              <li><a href="#services" class="text-[13px] text-white/35 hover:text-white transition-colors duration-200">Technical Consulting</a></li>
+              <li><a href="#services" class="text-[13px] text-white/35 hover:text-white transition-colors duration-200">HR Operations</a></li>
+              <li><a href="#services" class="text-[13px] text-white/35 hover:text-white transition-colors duration-200">Accounting &amp; Finance</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-[10px] font-semibold tracking-[0.22em] uppercase text-white/50 mb-5">Company</div>
+            <ul class="flex flex-col gap-3 list-none">
+              <li><a href="#about"   class="text-[13px] text-white/35 hover:text-white transition-colors duration-200">About Us</a></li>
+              <li><a href="#process" class="text-[13px] text-white/35 hover:text-white transition-colors duration-200">Our Process</a></li>
+              <li><a href="#contact" class="text-[13px] text-white/35 hover:text-white transition-colors duration-200">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-[10px] font-semibold tracking-[0.22em] uppercase text-white/50 mb-5">Connect</div>
+            <ul class="flex flex-col gap-3 list-none">
+              <li><a href="#"            class="text-[13px] text-white/35 hover:text-white transition-colors duration-200">LinkedIn</a></li>
+              <li><a href="careers.html" class="text-[13px] text-white/35 hover:text-white transition-colors duration-200">Careers</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="text-[12px] text-white/20">© 2026 KaizenScape. All rights reserved.</div>
+        <div class="flex gap-6">
+          <a href="privacy-policy.html" class="text-[12px] text-white/20 hover:text-white/50 transition-colors duration-200">Privacy Policy</a>
+          <a href="#"                   class="text-[12px] text-white/20 hover:text-white/50 transition-colors duration-200">Terms of Use</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // ── Nav scroll ──────────────────────────────────────────────────
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 80);
+    }, { passive: true });
+
+    // ── Scroll reveal ───────────────────────────────────────────────
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ── Form submit ─────────────────────────────────────────────────
+    const btn = document.getElementById('submit-btn');
+    btn.addEventListener('click', () => {
+      btn.textContent = 'Message Sent ✓';
+      btn.style.background = '#2D6A4F';
+      btn.disabled = true;
+      setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; btn.disabled = false; }, 3500);
+    });
+  </script>
+</body>
+</html>
