@@ -81,8 +81,10 @@
     /* ── Mobile: tap-to-reveal (replaces hover) ── */
     @media (max-width: 767px) {
       .svc-card { min-height: 420px; cursor: pointer; }
-      .svc-card.tapped .card-reveal { max-height: 420px; opacity: 1; }
-      .svc-card.tapped .card-border { transform: scaleX(1); }
+      .svc-card .card-reveal { max-height: 0 !important; opacity: 0 !important; }
+      .svc-card .card-border { transform: scaleX(0) !important; }
+      .svc-card.tapped .card-reveal { max-height: 480px !important; opacity: 1 !important; }
+      .svc-card.tapped .card-border { transform: scaleX(1) !important; }
       .svc-card.tapped .card-overlay { background: linear-gradient(to top, rgba(27,67,50,0.98) 40%, rgba(27,67,50,0.72) 70%, rgba(27,67,50,0.4) 100%) !important; }
       .svc-card .tap-hint { display: flex; }
       .svc-card.tapped .tap-hint { display: none; }
@@ -532,7 +534,7 @@
   <!-- ╔══════════════════════════════════════════╗
        MARQUEE — between about and process
   ╚══════════════════════════════════════════╝ -->
-  <div class="w-full overflow-hidden border-t border-b border-forest/10 py-4 bg-forest-xl" aria-hidden="true">
+  <div class="w-full border-t border-b border-forest/10 py-4 bg-forest-xl" style="overflow-x: clip;" aria-hidden="true">
     <div class="flex animate-marquee whitespace-nowrap">
       <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Microsoft 365</span>
       <span class="inline-flex items-center gap-6 px-8 text-[10px] font-semibold tracking-[0.24em] uppercase text-forest/50"><span class="w-1 h-1 rounded-full bg-ember/50 flex-shrink-0"></span>Modern Workplace</span>
