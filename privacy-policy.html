@@ -4,56 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — KaizenScape</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            cream:      '#F7F4EE',
-            'cream-md': '#EDE9E0',
-            'cream-dk': '#DDD7CA',
-            ink:        '#1C1A16',
-            'ink-soft': '#4A4740',
-            'ink-mute': '#8C8980',
-            gold:       '#B8843A',
-            'gold-lt':  '#D4A055',
+            paper:      '#FDFAF6',
+            cream:      '#F2EDE3',
+            forest:     '#1B4332',
+            'forest-lt':'#2D6A4F',
+            ember:      '#C8842A',
+            'ember-lt': '#E09A40',
+            ink:        '#1A1510',
+            'ink-soft': '#5A5248',
+            'ink-mute': '#9A9087',
           },
           fontFamily: {
-            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-            sans:    ['Syne', 'sans-serif'],
+            display:['"Lora"','Georgia','serif'],
+            sans:['"Plus Jakarta Sans"','system-ui','sans-serif'],
           },
         },
       },
     };
   </script>
   <style>
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 9999;
-      pointer-events: none; opacity: 0.018;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-    }
-    :focus-visible { outline: 2px solid #B8843A; outline-offset: 3px; }
+    :focus-visible { outline: 2px solid #C8842A; outline-offset: 3px; }
 
     .prose-section h2 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 24px;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 22px;
       font-weight: 400;
-      color: #1C1A16;
+      color: #1A1510;
       margin-top: 52px;
       margin-bottom: 16px;
       padding-bottom: 12px;
-      border-bottom: 1px solid #DDD7CA;
+      border-bottom: 1px solid rgba(27,67,50,0.12);
     }
     .prose-section h3 {
       font-size: 14px;
       font-weight: 700;
-      color: #1C1A16;
+      color: #1A1510;
       letter-spacing: 0.04em;
       margin-top: 28px;
       margin-bottom: 10px;
@@ -61,7 +56,7 @@
     .prose-section p {
       font-size: 15px;
       line-height: 1.85;
-      color: #4A4740;
+      color: #5A5248;
       margin-bottom: 16px;
     }
     .prose-section ul {
@@ -72,7 +67,7 @@
     .prose-section ul li {
       font-size: 15px;
       line-height: 1.8;
-      color: #4A4740;
+      color: #5A5248;
       padding-left: 20px;
       position: relative;
       margin-bottom: 6px;
@@ -85,25 +80,26 @@
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: #B8843A;
+      background: #C8842A;
     }
     .prose-section a {
-      color: #B8843A;
+      color: #C8842A;
       text-decoration: underline;
       text-underline-offset: 3px;
     }
-    .prose-section a:hover { color: #D4A055; }
+    .prose-section a:hover { color: #E09A40; }
   </style>
 </head>
-<body class="bg-cream text-ink font-sans antialiased">
+<body class="bg-paper text-ink font-sans antialiased">
 
   <!-- NAV -->
-  <nav class="bg-cream/95 backdrop-blur-md border-b border-cream-dk sticky top-0 z-50 flex items-center justify-between px-12 py-4">
-    <a href="index.html" class="font-display text-[22px] font-medium tracking-wide text-ink hover:text-gold transition-colors duration-200">
-      Kaizen<span class="text-gold">Scape</span>
+  <nav style="background:rgba(253,250,246,0.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(27,67,50,0.1);"
+       class="sticky top-0 z-50 flex items-center justify-between px-8 md:px-14 py-4">
+    <a href="index.html" class="font-display text-[22px] font-semibold tracking-wide text-ink hover:text-forest transition-colors duration-200">
+      Kaizen<span style="color:#C8842A;">Scape</span>
     </a>
     <a href="index.html"
-       class="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-ink-soft hover:text-gold transition-colors duration-200 group">
+       class="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-ink-soft hover:text-forest transition-colors duration-200 group">
       <svg class="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-200" viewBox="0 0 14 14" fill="none">
         <path d="M11.5 7h-9M5.5 3.5L2 7l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -112,23 +108,24 @@
   </nav>
 
   <!-- HEADER -->
-  <div class="bg-ink px-12 py-20 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-[0.03]"
-         style="background-image: repeating-linear-gradient(0deg,transparent,transparent 59px,#fff 59px,#fff 60px), repeating-linear-gradient(90deg,transparent,transparent 59px,#fff 59px,#fff 60px);"></div>
+  <div class="bg-forest px-8 md:px-14 py-20 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.04]"
+         style="background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px;"></div>
+    <div class="absolute right-0 bottom-0 w-[400px] h-[300px] pointer-events-none"
+         style="background:radial-gradient(ellipse at 80% 100%,rgba(200,132,42,0.18) 0%,transparent 65%);"></div>
     <div class="relative max-w-[860px] mx-auto">
-      <div class="flex items-center gap-3 text-[10px] font-bold tracking-[0.24em] uppercase text-gold mb-5">
-        <span class="block w-6 h-px bg-gold"></span>
-        Legal
+      <div class="flex items-center gap-3 text-[10px] font-semibold tracking-[0.26em] uppercase text-ember mb-5">
+        <span class="block w-6 h-px bg-ember"></span>Legal
       </div>
-      <h1 class="font-display font-light text-white leading-[1.05] mb-4" style="font-size: clamp(40px,5vw,68px); letter-spacing:-0.02em;">
+      <h1 class="font-display font-normal text-white leading-[1.05] mb-4" style="font-size:clamp(40px,5vw,68px);letter-spacing:-0.02em;">
         Privacy Policy
       </h1>
-      <p class="text-[14px] text-white/40">Last updated: April 2026</p>
+      <p class="text-[14px]" style="color:rgba(253,250,246,0.4);">Last updated: April 2026</p>
     </div>
   </div>
 
   <!-- CONTENT -->
-  <main class="px-12 py-16 max-w-[860px] mx-auto prose-section">
+  <main class="px-8 md:px-14 py-16 max-w-[860px] mx-auto prose-section">
 
     <p>
       This Privacy Policy describes how KaizenScape ("we", "our", or "us") collects, uses, and protects information that you provide when you use our website or engage with our services. We are committed to ensuring that your privacy is protected and that any information you share with us is handled in accordance with applicable data protection laws.
@@ -272,15 +269,15 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-ink px-12 py-10 mt-16">
+  <footer class="bg-ink px-8 md:px-14 py-10 mt-16 border-t border-white/05">
     <div class="max-w-[860px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-      <a href="index.html" class="font-display text-[20px] font-medium text-white hover:text-gold-lt transition-colors duration-200">
-        Kaizen<span class="text-gold">Scape</span>
+      <a href="index.html" class="font-display text-[20px] font-semibold text-white hover:text-ember-lt transition-colors duration-200">
+        Kaizen<span style="color:#C8842A;">Scape</span>
       </a>
-      <div class="text-[12px] text-white/20">© 2026 KaizenScape. All rights reserved.</div>
+      <div class="text-[12px]" style="color:rgba(255,255,255,0.2);">© 2026 KaizenScape. All rights reserved.</div>
       <div class="flex gap-6">
-        <a href="privacy-policy.html" class="text-[12px] text-white/40 hover:text-white/60 transition-colors duration-200">Privacy Policy</a>
-        <a href="careers.html"        class="text-[12px] text-white/20 hover:text-white/45 transition-colors duration-200">Careers</a>
+        <a href="privacy-policy.html" class="text-[12px] hover:text-white/60 transition-colors duration-200" style="color:rgba(255,255,255,0.4);">Privacy Policy</a>
+        <a href="careers.html" class="text-[12px] hover:text-white/60 transition-colors duration-200" style="color:rgba(255,255,255,0.3);">Careers</a>
       </div>
     </div>
   </footer>
