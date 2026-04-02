@@ -102,8 +102,8 @@
   <!-- ── NAV (matches home page) ── -->
   <nav style="background:rgba(253,250,246,0.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(27,67,50,0.1);"
        class="sticky top-0 z-50 flex items-center justify-between px-8 md:px-14 py-4">
-    <a href="index.html" class="font-display text-[22px] font-semibold tracking-wide text-ink hover:text-forest transition-colors duration-200">
-      Kaizen<span style="color:#C8842A;">Scape</span>
+    <a href="index.html" class="font-display text-[21px] font-medium tracking-wide text-ink hover:text-forest transition-colors duration-200">
+      Kaizen<span class="text-ember">Scape</span>
     </a>
     <a href="index.html"
        class="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-ink-soft hover:text-forest transition-colors duration-200 group">
@@ -433,13 +433,8 @@
           </div>
 
           <div class="mb-4">
-            <label class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Current Company <span class="text-ink-mute font-normal normal-case tracking-normal">(optional)</span></label>
-            <input type="text" name="company" placeholder="Your current or most recent employer" class="field" />
-          </div>
-
-          <div class="mb-4">
-            <label class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Cover Note <span class="text-ink-mute font-normal normal-case tracking-normal">(optional)</span></label>
-            <textarea name="message" rows="3" placeholder="Tell us briefly why you're a great fit…" class="field resize-none"></textarea>
+            <label class="block text-[10px] font-semibold tracking-[0.14em] uppercase text-ink-mute mb-2">Current Company</label>
+            <input type="text" name="company" placeholder="Your current or most recent employer" class="field" required />
           </div>
 
           <!-- Resume upload -->
@@ -461,9 +456,6 @@
             Submit Application
           </button>
 
-          <p class="text-[11px] text-ink-mute text-center mt-4 leading-[1.6]">
-            Your application will be sent to <span class="text-ink">careers@kaizenscape.com</span>
-          </p>
         </form>
       </div>
 
